@@ -47,11 +47,11 @@ export default function LoginPage() {
     <div className="w-full animate-fade-in">
       {/* Brand */}
       <div className="mb-8 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white text-2xl font-bold shadow-2xl backdrop-blur-sm">
-          E
+        <div className="mx-auto mb-6 flex items-center justify-center">
+          <img src="/logo_white_text.png" alt="Ethara.ai" className="h-14 w-auto drop-shadow-lg" />
         </div>
         <h1 className="text-3xl font-bold text-white tracking-tight">Welcome back</h1>
-        <p className="mt-2 text-sm text-white/50">Sign in to your Ethara.ai workspace</p>
+        <p className="mt-2 text-sm text-white/50">Sign in to your workspace</p>
       </div>
 
       {/* Card */}
@@ -73,7 +73,7 @@ export default function LoginPage() {
               autoComplete="email"
               placeholder="you@company.com"
               className={cn(
-                "h-11 w-full rounded-xl border bg-white/8 px-4 text-sm text-white placeholder:text-white/30",
+                "h-11 w-full rounded-xl border bg-white/8 px-4 text-sm text-white placeholder:text-white/60",
                 "outline-none transition-all focus:bg-white/12 focus:ring-2 focus:ring-teal-400/40",
                 errors.email ? "border-red-400/40" : "border-white/10 focus:border-teal-400/50"
               )}
@@ -90,7 +90,7 @@ export default function LoginPage() {
               autoComplete="current-password"
               placeholder="••••••••"
               className={cn(
-                "h-11 w-full rounded-xl border bg-white/8 px-4 text-sm text-white placeholder:text-white/30",
+                "h-11 w-full rounded-xl border bg-white/8 px-4 text-sm text-white placeholder:text-white/60",
                 "outline-none transition-all focus:bg-white/12 focus:ring-2 focus:ring-teal-400/40",
                 errors.password ? "border-red-400/40" : "border-white/10 focus:border-teal-400/50"
               )}

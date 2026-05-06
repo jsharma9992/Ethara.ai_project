@@ -24,7 +24,7 @@ export default function NewProjectPage() {
       <div>
         <h1 className="text-2xl font-bold text-ethara-ink">New Project</h1>
         <p className="mt-1 text-sm text-ethara-muted">
-          Create a project and invite collaborators once it's ready.
+          Create a project and invite collaborators once it&apos;s ready.
         </p>
       </div>
 

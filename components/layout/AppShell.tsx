@@ -157,14 +157,8 @@ export function AppShell({ children, profile }: { children: ReactNode; profile: 
 
         {/* Brand */}
         <div className="relative px-5 py-6">
-          <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/20 text-white font-bold text-sm backdrop-blur-sm border border-white/20 shadow-lg">
-              E
-            </div>
-            <div>
-              <span className="block text-base font-bold tracking-tight text-white">Ethara.ai</span>
-              <span className="block text-[10px] text-white/40 tracking-widest uppercase">Workspace</span>
-            </div>
+          <Link href="/dashboard" className="flex items-center group">
+            <img src="/logo_white_text.png" alt="Ethara.ai" className="h-9 w-auto drop-shadow-md" />
           </Link>
         </div>
 
@@ -187,9 +181,8 @@ export function AppShell({ children, profile }: { children: ReactNode; profile: 
       {/* Mobile Header */}
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-3 lg:hidden">
         <div className="flex items-center justify-between gap-3">
-          <Link href="/dashboard" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-ethara-teal text-white text-sm font-bold">E</div>
-            <span className="font-bold text-ethara-ink text-sm">Ethara.ai</span>
+          <Link href="/dashboard" className="flex items-center">
+            <img src="/logo_white_text.png" alt="Ethara.ai" className="h-6 w-auto brightness-0" />
           </Link>
           <button
             onClick={() => setMobileOpen((o) => !o)}

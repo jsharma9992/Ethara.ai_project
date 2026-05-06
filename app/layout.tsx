@@ -5,7 +5,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Ethara.ai — Project Manager",
-  description: "Internal project and task management for Ethara.ai"
+  description: "Internal project and task management for Ethara.ai",
+  icons: {
+    icon: "/favicon.svg",
+  }
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -14,6 +17,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
