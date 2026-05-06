@@ -84,9 +84,9 @@ export function TaskCard({
         </div>
       ) : null}
 
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         {/* Title + badges */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
           <div className="min-w-0 flex-1">
             <h3 className="font-semibold text-[14px] text-ethara-ink leading-snug">{task.title}</h3>
             {task.description ? (
@@ -114,7 +114,7 @@ export function TaskCard({
                 ?
               </div>
             )}
-            <span>{assigneeName ?? "Unassigned"}</span>
+            <span className="truncate">{assigneeName ?? "Unassigned"}</span>
           </div>
 
           {/* Due date */}
@@ -124,14 +124,14 @@ export function TaskCard({
         </div>
 
         {/* Actions */}
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center">
           {/* Status select */}
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <select
               value={task.status}
               onChange={(e) => changeStatus(e.target.value as TaskStatus)}
               disabled={isPending}
-              className={selectCls}
+              className={cn(selectCls, "w-full sm:w-auto")}
               aria-label="Change task status"
             >
               <option value="todo">Todo</option>
@@ -148,10 +148,10 @@ export function TaskCard({
           </div>
 
           {isAdmin ? (
-            <>
+            <div className="flex gap-2 sm:ml-auto">
               <Button type="button" variant="secondary" size="sm" onClick={() => { setEditing(true); setError(null); }}>
                 <EditIcon />
-                Edit
+                <span className="hidden sm:inline">Edit</span>
               </Button>
               <Button
                 type="button"
@@ -161,9 +161,9 @@ export function TaskCard({
                 onClick={removeTask}
               >
                 <TrashIcon />
-                Delete
+                <span className="hidden sm:inline">Delete</span>
               </Button>
-            </>
+            </div>
           ) : null}
         </div>
       </div>

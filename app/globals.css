@@ -71,8 +71,42 @@ a {
 .toast-enter { animation: toast-in  220ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .toast-leave { animation: toast-out 180ms cubic-bezier(0.4, 0, 1, 1) forwards; }
 
+/* ─── Slide-in-right animation ───────────────────────────── */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Fade in animation ──────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 200ms ease-out forwards;
+}
+
 /* ─── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ─── Mobile improvements ────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Better touch targets */
+  button, select, input, a {
+    min-height: 44px;
+  }
+
+  /* Larger tap areas for small buttons */
+  .touch-target {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

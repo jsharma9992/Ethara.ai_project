@@ -56,6 +56,29 @@ export interface ProjectWithCounts extends Project {
   task_count: number;
 }
 
+export interface TaskComment {
+  id: string;
+  task_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  profiles?: Profile | null;
+}
+
+export interface ActivityLog {
+  id: string;
+  project_id: string;
+  task_id: string | null;
+  user_id: string;
+  action: string;
+  entity_type: string;
+  entity_id: string | null;
+  details: Record<string, unknown>;
+  created_at: string;
+  profiles?: Profile | null;
+}
+
 export interface ActionResult<T = unknown> {
   success: boolean;
   data?: T;

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Modal } from "@/components/ui/Modal";
+import { Pagination } from "@/components/ui/Pagination";
 import { TaskCard } from "@/components/tasks/TaskCard";
 import { TaskForm } from "@/components/tasks/TaskForm";
 import type { ProjectMemberWithProfile, TaskPriority, TaskStatus, TaskWithRelations } from "@/lib/types";
@@ -25,8 +26,20 @@ function TaskIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <circle cx="6" cy="6" r="4" stroke="currentColor" strokeWidth="1.4" />
+      <path d="M9.5 9.5L13 13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const selectCls =
   "h-9 rounded-lg border border-ethara-line bg-white px-3 pr-8 text-sm text-ethara-ink appearance-none cursor-pointer transition focus:border-ethara-teal focus:ring-2 focus:ring-ethara-teal/20 focus:outline-none";
+
+type SortBy = "created_at" | "due_date" | "priority" | "title";
+type SortOrder = "asc" | "desc";
 
 export function TaskList({
   projectId,
@@ -43,17 +56,54 @@ export function TaskList({
   const [status, setStatus] = useState<TaskStatus | "all">("all");
   const [priority, setPriority] = useState<TaskPriority | "all">("all");
   const [assignee, setAssignee] = useState("all");
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState<SortBy>("created_at");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
-  const filteredTasks = useMemo(
-    () =>
-      tasks.filter((task) => {
-        if (status !== "all" && task.status !== status) return false;
-        if (priority !== "all" && task.priority !== priority) return false;
-        if (assignee !== "all" && (task.assigned_to ?? "") !== assignee) return false;
-        return true;
-      }),
-    [assignee, priority, status, tasks]
-  );
+  const filteredTasks = useMemo(() => {
+    let result = tasks.filter((task) => {
+      if (status !== "all" && task.status !== status) return false;
+      if (priority !== "all" && task.priority !== priority) return false;
+      if (assignee !== "all" && (task.assigned_to ?? "") !== assignee) return false;
+      if (search) {
+        const query = search.toLowerCase();
+        const titleMatch = task.title.toLowerCase().includes(query);
+        const descMatch = task.description?.toLowerCase().includes(query) ?? false;
+        if (!titleMatch && !descMatch) return false;
+      }
+      return true;
+    });
+
+    // Sort
+    result.sort((a, b) => {
+      let cmp = 0;
+      if (sortBy === "created_at") {
+        cmp = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      } else if (sortBy === "due_date") {
+        const aDate = a.due_date ? new Date(a.due_date).getTime() : Infinity;
+        const bDate = b.due_date ? new Date(b.due_date).getTime() : Infinity;
+        cmp = aDate - bDate;
+      } else if (sortBy === "priority") {
+        const order: Record<TaskPriority, number> = { high: 0, medium: 1, low: 2 };
+        cmp = order[a.priority] - order[b.priority];
+      } else if (sortBy === "title") {
+        cmp = a.title.localeCompare(b.title);
+      }
+      return sortOrder === "asc" ? cmp : -cmp;
+    });
+
+    return result;
+  }, [assignee, priority, status, tasks, search, sortBy, sortOrder]);
+
+  // Reset page when filters change
+  useMemo(() => {
+    setCurrentPage(1);
+  }, [status, priority, assignee, search, sortBy, sortOrder]);
+
+  const totalPages = Math.ceil(filteredTasks.length / pageSize);
+  const paginatedTasks = filteredTasks.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
     <section className="space-y-4">
@@ -72,6 +122,20 @@ export function TaskList({
               Add Task
             </Button>
           ) : null}
+        </div>
+
+        {/* Search input */}
+        <div className="relative">
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+            <SearchIcon />
+          </span>
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-9 w-full rounded-lg border border-ethara-line bg-white pl-9 pr-3 text-sm text-ethara-ink placeholder:text-slate-400 transition focus:border-ethara-teal focus:ring-2 focus:ring-ethara-teal/20 focus:outline-none"
+          />
         </div>
 
         {/* Filter pills */}
@@ -129,6 +193,32 @@ export function TaskList({
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
             </span>
           </div>
+
+          {/* Sort controls */}
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortBy)}
+              className={selectCls}
+              aria-label="Sort by"
+            >
+              <option value="created_at">Sort: Created</option>
+              <option value="due_date">Sort: Due date</option>
+              <option value="priority">Sort: Priority</option>
+              <option value="title">Sort: Title</option>
+            </select>
+            <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
+            </span>
+          </div>
+
+          <button
+            onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+            className="h-9 rounded-lg border border-ethara-line bg-white px-3 text-sm text-ethara-ink transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-ethara-teal/20"
+            aria-label={sortOrder === "asc" ? "Sort descending" : "Sort ascending"}
+          >
+            {sortOrder === "asc" ? "↑ Asc" : "↓ Desc"}
+          </button>
         </div>
       </div>
 

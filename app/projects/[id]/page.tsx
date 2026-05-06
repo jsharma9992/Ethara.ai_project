@@ -59,7 +59,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
       </Link>
 
       {/* Project header with grid pattern */}
-      <div className={cn("relative overflow-hidden rounded-2xl bg-gradient-to-br", gradient)}>
+      <div className={cn("relative overflow-hidden rounded-xl bg-gradient-to-br sm:rounded-2xl", gradient)}>
         <GridPattern
           width={28} height={28}
           squares={[[1,2],[3,1],[6,3],[9,1],[12,2],[2,5],[5,4],[8,5],[11,3],[4,7],[7,6],[10,7]]}
@@ -70,11 +70,11 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         />
         <div className="pointer-events-none absolute -left-10 -bottom-10 h-48 w-48 rounded-full bg-white/5 blur-3xl" />
 
-        <div className="relative p-6 sm:p-8">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="relative p-4 sm:p-6 lg:p-8">
+          <div className="flex flex-col gap-3 sm:gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2.5 mb-2">
-                <h1 className="text-2xl font-bold text-white sm:text-3xl truncate">{project.name}</h1>
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                <h1 className="text-xl font-bold text-white sm:text-2xl lg:text-3xl truncate">{project.name}</h1>
                 <RoleBadge role={membership.role} onDark />
               </div>
               <p className="max-w-3xl text-sm leading-relaxed text-white/60">
@@ -87,7 +87,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
       </div>
 
       {/* Tasks + Members */}
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <TaskList
           projectId={params.id}
           tasks={(tasks ?? []) as TaskWithRelations[]}

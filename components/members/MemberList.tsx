@@ -138,23 +138,25 @@ export function MemberList({
           return (
             <div
               key={member.id}
-              className="flex items-center gap-3 rounded-xl border border-ethara-line bg-white px-4 py-3 shadow-card"
+              className="flex flex-col gap-3 rounded-xl border border-ethara-line bg-white px-4 py-3 shadow-card sm:flex-row sm:items-center"
             >
-              {/* Avatar */}
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ethara-teal/10 text-sm font-bold text-ethara-teal">
-                {initials(name) || "M"}
-              </div>
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                {/* Avatar */}
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ethara-teal/10 text-sm font-bold text-ethara-teal">
+                  {initials(name) || "M"}
+                </div>
 
-              {/* Name + email */}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-ethara-ink">{name}</p>
-                {profile?.email && profile.email !== name ? (
-                  <p className="truncate text-xs text-slate-400">{profile.email}</p>
-                ) : null}
+                {/* Name + email */}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-ethara-ink">{name}</p>
+                  {profile?.email && profile.email !== name ? (
+                    <p className="truncate text-xs text-slate-400">{profile.email}</p>
+                  ) : null}
+                </div>
               </div>
 
               {/* Role + actions */}
-              <div className="flex shrink-0 items-center gap-2">
+              <div className="flex items-center gap-2 sm:shrink-0">
                 {isAdmin ? (
                   <div className="relative">
                     <select
@@ -190,7 +192,7 @@ export function MemberList({
                         ? "Cannot remove the sole admin — promote another member first."
                         : "Remove member"
                     }
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition
                       ${
                         isSoleAdminSelf
                           ? "cursor-not-allowed text-slate-200"

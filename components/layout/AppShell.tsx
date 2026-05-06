@@ -182,15 +182,20 @@ export function AppShell({ children, profile }: { children: ReactNode; profile: 
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-sm px-4 py-3 lg:hidden">
         <div className="flex items-center justify-between gap-3">
           <Link href="/dashboard" className="flex items-center">
-            <img src="/logo_white_text.png" alt="Ethara.ai" className="h-6 w-auto brightness-0" />
+            <img src="/logo_white_text.png" alt="Ethara.ai" className="h-7 w-auto" />
           </Link>
-          <button
-            onClick={() => setMobileOpen((o) => !o)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          >
-            {mobileOpen ? <CloseIcon /> : <HamburgerIcon />}
-          </button>
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-teal-600 text-xs font-bold text-white">
+              {initials(profile?.full_name ?? "E")}
+            </div>
+            <button
+              onClick={() => setMobileOpen((o) => !o)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:bg-slate-50"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            >
+              {mobileOpen ? <CloseIcon /> : <HamburgerIcon />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -198,25 +203,37 @@ export function AppShell({ children, profile }: { children: ReactNode; profile: 
       {mobileOpen && (
         <>
           <div
-            className="fixed inset-0 top-[57px] z-20 bg-slate-900/30 backdrop-blur-[1px] lg:hidden"
+            className="fixed inset-0 top-[57px] z-20 bg-slate-900/40 backdrop-blur-sm lg:hidden"
             onClick={() => setMobileOpen(false)}
             aria-hidden="true"
           />
           <div
-            className="fixed inset-x-0 top-[57px] z-20 pb-5 pt-3 shadow-xl lg:hidden animate-fade-in"
+            className="fixed inset-y-0 right-0 z-30 w-72 shadow-2xl lg:hidden animate-slide-in-right"
             style={{ background: "linear-gradient(180deg, #0f766e 0%, #0a5c55 100%)" }}
           >
-            <nav className="px-3 space-y-0.5">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.href} href={item.href} label={item.label} Icon={item.Icon}
-                  active={pathname === item.href || pathname.startsWith(`${item.href}/`)}
+            <div className="flex h-full flex-col">
+              <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
+                <span className="text-sm font-semibold text-white">Menu</span>
+                <button
                   onClick={() => setMobileOpen(false)}
-                />
-              ))}
-            </nav>
-            <div className="mt-4 px-4">
-              <ProfileFooter profile={profile} onLogout={logout} />
+                  className="flex h-8 w-8 items-center justify-center rounded-lg text-white/60 hover:bg-white/10 hover:text-white"
+                  aria-label="Close menu"
+                >
+                  <CloseIcon />
+                </button>
+              </div>
+              <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5">
+                {navItems.map((item) => (
+                  <NavLink
+                    key={item.href} href={item.href} label={item.label} Icon={item.Icon}
+                    active={pathname === item.href || pathname.startsWith(`${item.href}/`)}
+                    onClick={() => setMobileOpen(false)}
+                  />
+                ))}
+              </nav>
+              <div className="border-t border-white/10 p-4">
+                <ProfileFooter profile={profile} onLogout={logout} />
+              </div>
             </div>
           </div>
         </>
@@ -224,7 +241,7 @@ export function AppShell({ children, profile }: { children: ReactNode; profile: 
 
       {/* Main content */}
       <main className="lg:pl-64">
-        <div className="mx-auto w-full max-w-7xl px-4 py-7 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 sm:py-7 lg:px-8">
           {children}
         </div>
       </main>

@@ -1,16 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/Button";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { ProjectCard } from "@/components/projects/ProjectCard";
 import { GridPattern } from "@/components/ui/grid-pattern";
+import { ProjectList } from "@/components/projects/ProjectList";
 import { createClient } from "@/lib/supabase/server";
 import type { Project, ProjectWithCounts } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-function FolderIcon() {
-  return <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M3 7C3 5.9 3.9 5 5 5H10.17C10.58 5 10.97 5.19 11.22 5.51L12.38 7H19C20.1 7 21 7.9 21 9V18C21 19.1 20.1 20 19 20H5C3.9 20 3 19.1 3 18V7Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" /></svg>;
-}
 function PlusIcon() {
   return <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2.5v10M2.5 7.5h10" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>;
 }
@@ -72,22 +67,7 @@ export default async function ProjectsPage() {
         </div>
       </div>
 
-      {projects.length === 0 ? (
-        <EmptyState
-          icon={<FolderIcon />}
-          heading="No projects yet"
-          subtext="Create your first project — you'll automatically become its admin."
-          action={
-            <Link href="/projects/new">
-              <Button><PlusIcon /> Create Project</Button>
-            </Link>
-          }
-        />
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project) => <ProjectCard key={project.id} project={project} />)}
-        </div>
-      )}
+      <ProjectList projects={projects} />
     </div>
   );
 }
