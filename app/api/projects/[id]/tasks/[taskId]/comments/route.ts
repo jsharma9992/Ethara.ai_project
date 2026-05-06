@@ -39,7 +39,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 // POST /api/projects/[id]/tasks/[taskId]/comments - Create comment
 export async function POST(request: NextRequest, { params }: { params: { id: string; taskId: string } }) {
   const { user, supabase, error } = await requireProjectMember(params.id);
-  if (error || !user) return error;
+  if (error) return error;
+  if (!user) return apiError("Unauthorized", 401);
 
   // Verify task belongs to project
   const { data: task } = await supabase

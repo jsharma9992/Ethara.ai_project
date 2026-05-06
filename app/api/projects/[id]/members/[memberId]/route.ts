@@ -6,7 +6,8 @@ import type { ProjectMember } from "@/lib/types";
 // PUT /api/projects/[id]/members/[memberId] - Update member role (admin only)
 export async function PUT(request: NextRequest, { params }: { params: { id: string; memberId: string } }) {
   const { user, supabase, error } = await requireProjectAdmin(params.id);
-  if (error || !user) return error;
+  if (error) return error;
+  if (!user) return apiError("Unauthorized", 401);
 
   const body = await request.json();
   const validated = validate(updateMemberRoleSchema, body);
@@ -46,6 +47,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     .single();
 
   if (updateError) return apiError(updateError.message, 500);
+  if (!data) return apiError("Member not found", 404);
 
   return apiResponse(data as ProjectMember);
 }
@@ -53,7 +55,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 // DELETE /api/projects/[id]/members/[memberId] - Remove member (admin only)
 export async function DELETE(_request: NextRequest, { params }: { params: { id: string; memberId: string } }) {
   const { user, supabase, error } = await requireProjectAdmin(params.id);
-  if (error || !user) return error;
+  if (error) return error;
+  if (!user) return apiError("Unauthorized", 401);
 
   // Get target member
   const { data: target } = await supabase

@@ -6,7 +6,8 @@ import type { Project } from "@/lib/types";
 // GET /api/projects - List user's projects with pagination and search
 export async function GET(request: NextRequest) {
   const { user, supabase, error } = await requireAuth();
-  if (error || !user) return error;
+  if (error) return error;
+  if (!user) return apiError("Unauthorized", 401);
 
   const { searchParams } = new URL(request.url);
   const filter = validate(projectFilterSchema, Object.fromEntries(searchParams));
@@ -69,7 +70,8 @@ export async function GET(request: NextRequest) {
 // POST /api/projects - Create a new project
 export async function POST(request: NextRequest) {
   const { user, supabase, error } = await requireAuth();
-  if (error || !user) return error;
+  if (error) return error;
+  if (!user) return apiError("Unauthorized", 401);
 
   const body = await request.json();
   const validated = validate(createProjectSchema, body);

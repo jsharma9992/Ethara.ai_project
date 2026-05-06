@@ -57,7 +57,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 // POST /api/projects/[id]/tasks - Create task (admin only)
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   const { user, supabase, error } = await requireProjectAdmin(params.id);
-  if (error || !user) return error;
+  if (error) return error;
+  if (!user) return apiError("Unauthorized", 401);
 
   const body = await request.json();
   const validated = validate(createTaskSchema, body);
