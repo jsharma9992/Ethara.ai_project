@@ -47,8 +47,8 @@ export default function SignupPage() {
   }
 
   const fieldCls = (err?: string) => cn(
-    "h-11 w-full rounded-xl border bg-white/8 px-4 text-sm text-white placeholder:text-white/60",
-    "outline-none transition-all focus:bg-white/12 focus:ring-2 focus:ring-teal-400/40",
+    "h-11 w-full rounded-xl border bg-white px-4 text-sm text-ethara-ink placeholder:text-slate-400",
+    "outline-none transition-all focus:bg-white focus:ring-2 focus:ring-teal-400/40",
     err ? "border-red-400/40" : "border-white/10 focus:border-teal-400/50"
   );
 
